@@ -1,5 +1,6 @@
 import QuestionForm from '@/components/components/QuestionForm';
 import React from 'react'
+import { getRandomQuestion } from '../api/questions/route';
 
 type Props = {}
 
@@ -15,14 +16,7 @@ async function questionHome({}: Props) {
 }
 
 async function getData() {
-    const res = await fetch(`${process.env.VERCEL_URL ? "https://" + process.env.VERCEL_URL : process.env.NEXT_PUBLIC_API_BASE_PATH}/api/questions`, {cache: 'no-cache'});
-
-    if (!res.ok) {
-      // This will activate the closest `error.js` Error Boundary
-      throw new Error('Failed to fetch data');
-    }
-
-    return res.json();
+    return getRandomQuestion()
   }
 
 export default questionHome
