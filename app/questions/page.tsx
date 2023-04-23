@@ -15,7 +15,7 @@ async function questionHome({}: Props) {
 }
 
 async function getData() {
-    const res = await fetch(`${process.env.VERCEL_URL ?? process.env.NEXT_PUBLIC_API_BASE_PATH}/api/questions`, {cache: 'no-cache'});
+    const res = await fetch(`${"https://" + process.env.VERCEL_URL ?? process.env.NEXT_PUBLIC_API_BASE_PATH}/api/questions`, {cache: 'no-cache'});
 
     if (!res.ok) {
       // This will activate the closest `error.js` Error Boundary
