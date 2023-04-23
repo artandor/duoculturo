@@ -3,6 +3,7 @@ import './globals.css'
 import {Inter} from 'next/font/google'
 import {config} from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
+import {Analytics} from "@vercel/analytics/react";
 
 config.autoAddCss = false
 
@@ -23,6 +24,8 @@ export default function RootLayout({
         <body className={inter.className}>
         <ThemeProvider>{children}
         </ThemeProvider>
+
+        <Analytics/>
         </body>
         </html>
     )
