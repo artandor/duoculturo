@@ -13,7 +13,6 @@ export async function GET(request: Request) {
   return new NextResponse(JSON.stringify(getRandomQuizz()), {headers: {"Content-Type" : "application/json"}})
 }
 
-
-export function getRandomQuizz() {
+function getRandomQuizz() {
     return quizz[Math.floor(Math.random() * (quizz.length))]
-  }
+}
