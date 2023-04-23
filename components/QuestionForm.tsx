@@ -3,7 +3,6 @@ import React from 'react'
 import AnswerComponent from './answer'
 import { useForm } from "react-hook-form";
 import { Button } from './override/material';
-import { NextResponse } from 'next/server';
 
 type Props = {
     question: Question;
@@ -13,13 +12,13 @@ type Props = {
 
 type FormData = {
     answer: number[];
-  };
+};
 
 function QuestionForm({question, triggerNextQuestion, increaseScore}: Props) {
     const { register, setValue, handleSubmit, formState: { errors } } = useForm<FormData>();
 
     const onSubmit = handleSubmit(data => {
-        fetch(`http://localhost:3000/api/questions/${question.id}`, {
+        fetch(`${process.env.NEXT_PUBLIC_API_BASE_PATH}/api/questions/${question.id}`, {
             'method': 'POST',
             'body': JSON.stringify({
                 "selectedAnswers": [...data.answer]

@@ -1,6 +1,4 @@
 import QuestionForm from '@/components/components/QuestionForm';
-import AnswerComponent from '@/components/components/answer';
-import { Button } from '@/components/components/override/material';
 import React from 'react'
 
 type Props = {}
@@ -19,7 +17,7 @@ async function questionHome({}: Props) {
 
 
 async function getData() {
-    const res = await fetch('http://localhost:3000/api/questions', {cache: 'no-cache'});
+    const res = await fetch(`${process.env.API_BASE_PATH}/api/questions`, {cache: 'no-cache'});
 
     if (!res.ok) {
       // This will activate the closest `error.js` Error Boundary
