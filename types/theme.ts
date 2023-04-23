@@ -1,0 +1,3 @@
+interface Theme {
+    name: string;
+}
