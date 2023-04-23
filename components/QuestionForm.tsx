@@ -1,13 +1,13 @@
 "use client";
-import React from 'react'
+import React, { useState } from 'react'
 import AnswerComponent from './answer'
 import { useForm } from "react-hook-form";
 import { Button } from './override/material';
 
 type Props = {
     question: Question;
-    triggerNextQuestion: Function;
-    increaseScore: Function
+    triggerNextQuestion?: Function;
+    increaseScore?: Function;
 }
 
 type FormData = {
@@ -27,9 +27,9 @@ function QuestionForm({question, triggerNextQuestion, increaseScore}: Props) {
             if(response.status === 200) {
                 const json = await response.json()
                 if(json.result) {
-                    increaseScore()
+                    increaseScore && increaseScore()
                 }
-                triggerNextQuestion()
+                triggerNextQuestion && triggerNextQuestion()
             }
         })
 
