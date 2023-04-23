@@ -1,6 +1,6 @@
 "use client";
 import React from 'react'
-import AnswerComponent from './answer'
+import AnswerComponent from './AnswerComponent'
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Button } from './override/material';
 
@@ -16,7 +16,7 @@ type IFormInput = {
 
 
 function QuestionForm({question, triggerNextQuestion, increaseScore}: Props) {
-    const { register, setValue, handleSubmit, formState: { errors } } = useForm<IFormInput>();
+    const { register, setValue, handleSubmit, formState: { errors }, reset } = useForm<IFormInput>();
 
     const onSubmit: SubmitHandler<IFormInput> = (data => {
         fetch(`${process.env.NEXT_PUBLIC_VERCEL_URL ? "https://" + process.env.NEXT_PUBLIC_VERCEL_URL : process.env.NEXT_PUBLIC_API_BASE_PATH}/api/questions/${question.id}`, {
@@ -30,6 +30,7 @@ function QuestionForm({question, triggerNextQuestion, increaseScore}: Props) {
                 if(json.result) {
                     increaseScore && increaseScore()
                 }
+                reset()
                 triggerNextQuestion && triggerNextQuestion()
             }
         })

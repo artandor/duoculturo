@@ -4,4 +4,3 @@ type Question = {
     multiple: boolean;
     answers: Answer[];
 }
-

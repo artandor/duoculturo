@@ -23,7 +23,9 @@ const quizz: Quizz[] = [
   {id: 1, theme: {name: "Kamelott"}, questions: [
       getRandomQuestion(),
       getRandomQuestion(),
-      getRandomQuestion()
+      getRandomQuestion(),
+      getRandomQuestion(),
+      getRandomQuestion(),
   ]}
 ]
 
