@@ -1,6 +1,6 @@
 import QuizzComponent from '@/components/components/QuizzComponent';
 import React from 'react'
-import { getRandomQuestion } from '../api/questions/route';
+import {getRandomQuestion} from '../api/questions/route';
 
 type Props = {}
 
@@ -8,11 +8,11 @@ async function page({}: Props) {
     const quizz: Quizz = await getData();
 
 
-  return (
-    <div className='container mx-64 my-16'>
-        <QuizzComponent quizz={quizz} />
-    </div>
-  )
+    return (
+        <div className='container mx-64 my-16'>
+            <QuizzComponent quizz={quizz}/>
+        </div>
+    )
 }
 
 async function getData() {
@@ -20,17 +20,19 @@ async function getData() {
 }
 
 const quizz: Quizz[] = [
-  {id: 1, theme: {name: "Kamelott"}, questions: [
-      getRandomQuestion(),
-      getRandomQuestion(),
-      getRandomQuestion(),
-      getRandomQuestion(),
-      getRandomQuestion(),
-  ]}
+    {
+        id: 1, theme: {id: 1, name: "Kamelott"}, questions: [
+            getRandomQuestion(),
+            getRandomQuestion(),
+            getRandomQuestion(),
+            getRandomQuestion(),
+            getRandomQuestion(),
+        ]
+    }
 ]
 
 function getRandomQuizz(): Quizz {
-  return quizz[Math.floor(Math.random() * (quizz.length))]
+    return quizz[Math.floor(Math.random() * (quizz.length))]
 }
 
 export default page;
