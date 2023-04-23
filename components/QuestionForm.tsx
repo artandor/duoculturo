@@ -19,7 +19,7 @@ function QuestionForm({question, triggerNextQuestion, increaseScore}: Props) {
     const { register, setValue, handleSubmit, formState: { errors } } = useForm<IFormInput>();
 
     const onSubmit: SubmitHandler<IFormInput> = (data => {
-        fetch(`${"https://" + process.env.VERCEL_URL ?? process.env.NEXT_PUBLIC_API_BASE_PATH}/api/questions/${question.id}`, {
+        fetch(`${process.env.VERCEL_URL ? "https://" + process.env.VERCEL_URL : process.env.NEXT_PUBLIC_API_BASE_PATH}`, {
             'method': 'POST',
             'body': JSON.stringify({
                 "selectedAnswers": [...data.answer]
