@@ -1,5 +1,7 @@
 import QuizzComponent from '@/components/components/QuizzComponent';
 import React from 'react'
+// @ts-ignore
+import decode from "decode-html"
 
 type Props = {
     params: {
@@ -24,7 +26,6 @@ async function getQuizz(id: number): Promise<Quizz> {
         questions: await getQuestionsForCategory(id),
         theme: {id, name: "aaa"}
     }
-    console.log(quizz.questions[0].answers)
     return quizz;
 }
 
@@ -37,9 +38,9 @@ async function getQuestionsForCategory(id: number): Promise<Question[]> {
 function normalizeQuestion(question: any, key: number): Question {
     return {
         id: key,
-        title: question["question"],
+        title: decode(question["question"]),
         answers: [...question["incorrect_answers"], question["correct_answer"]].map((textAnswer: string, key: number): Answer => {
-            return {id: key, title: textAnswer, isCorrect: textAnswer === question["correct_answer"]}
+            return {id: key, title: decode(textAnswer), isCorrect: textAnswer === question["correct_answer"]}
         }),
         multiple: question["type"] === "multiple"
     }

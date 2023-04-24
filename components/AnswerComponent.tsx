@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react'
-import { Button, Checkbox, Radio } from './override/material';
+import {Checkbox, Radio} from './override/material';
 
 
 type Props = {
