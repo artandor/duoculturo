@@ -1,29 +1,19 @@
-import { NextResponse } from "next/server";
-import { getQuestions } from "../route";
+import {NextResponse} from "next/server";
+import {prisma} from "@/components/app/database";
 
 
-export async function POST(request: Request, {params} : {params: {id: number}}) {
-  const id = params.id;
+export async function POST(request: Request, {params}: { params: { id: number } }) {
+    const questionId = params.id;
 
-  const questions = getQuestions()
+    const answers: { id: number }[] = await prisma.answer.findMany({
+        select: {id: true},
+        where: {questionId: Number(questionId), isCorrect: true},
+    })
+    const res = await request.json();
 
-
-  const question: Question|undefined = questions.find((question: Question) => {
-    return question.id == id
-  })
-  const res = await request.json();
-
-
-  if (!question || !res.selectedAnswers) {
-    return NextResponse.json({"result": false})
-  }
-
-  let resultIsCorrect = true;
-  res.selectedAnswers.forEach((answerId: number) => {
-    if (question.answers.find((answer => answer.id == answerId && !answer.isCorrect))) {
-      resultIsCorrect = false;
+    if (answers.length <= 0 || !res.selectedAnswers) {
+        return NextResponse.json({"result": false})
     }
-  });
 
-  return NextResponse.json({"result": resultIsCorrect})
+    return NextResponse.json({"result": JSON.stringify(res.selectedAnswers) === JSON.stringify(answers)})
 }

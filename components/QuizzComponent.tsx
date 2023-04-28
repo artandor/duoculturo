@@ -1,7 +1,7 @@
 "use client";
 import React, {useState} from 'react'
 import QuestionForm from './QuestionForm';
-import {Button, Progress} from './override/material';
+import {Progress} from './override/material';
 import QuizzResult from './QuizzResult';
 
 type Props = {
