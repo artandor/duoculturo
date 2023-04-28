@@ -65,7 +65,8 @@ async function getQuizzForCategory(categoryId: number): Promise<Quizz> {
                         select: {
                             id: true,
                             title: true
-                        }
+                        },
+                        orderBy: {title: "asc"}
                     }
                 }
             }
