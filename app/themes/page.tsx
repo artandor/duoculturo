@@ -1,6 +1,7 @@
 import React from 'react'
 import {Card, CardBody, CardFooter, Typography} from "@/components/components/override/material";
 import Link from "next/link";
+import {prisma} from "@/components/app/database";
 
 type Props = {}
 
@@ -29,9 +30,14 @@ async function page({}: Props) {
 }
 
 async function getData(): Promise<Theme[]> {
-    const response = await fetch('https://opentdb.com/api_category.php', {next: {revalidate: 60}})
+    const response = await fetch('https://opentdb.com/api_category.php', {next: {revalidate: 3600}})
     const json = await response.json()
-    return json["trivia_categories"];
+
+    await prisma.theme.createMany({
+        data: json["trivia_categories"],
+        skipDuplicates: true
+    })
+    return prisma.theme.findMany({orderBy: {name: 'asc'}});
 }
 
 export default page;

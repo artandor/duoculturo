@@ -1,0 +1,7 @@
+services:
+  database:
+    image: mariadb:10.7
+    environment:
+      MARIADB_ROOT_PASSWORD: password
+    ports:
+      - 3306:3306

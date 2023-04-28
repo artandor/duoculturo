@@ -2,6 +2,7 @@ import QuizzComponent from '@/components/components/QuizzComponent';
 import React from 'react'
 // @ts-ignore
 import decode from "decode-html"
+import {prisma} from "@/components/app/database";
 
 type Props = {
     params: {
@@ -10,7 +11,7 @@ type Props = {
 }
 
 async function page({params}: Props) {
-    const quizz: Quizz = await getQuizz(params.category);
+    const quizz: Quizz = await getQuizzForCategory(params.category);
 
 
     return (
@@ -20,13 +21,56 @@ async function page({params}: Props) {
     )
 }
 
-async function getQuizz(id: number): Promise<Quizz> {
-    const quizz = {
-        id,
-        questions: await getQuestionsForCategory(id),
-        theme: {id, name: "aaa"}
-    }
-    return quizz;
+async function getQuizzForCategory(categoryId: number): Promise<Quizz> {
+    let apiQuestions: Question[] = await getQuestionsForCategory(categoryId);
+
+    const quizz = await prisma.quizz.create({
+        data: {}
+    })
+
+    await Promise.all(apiQuestions.map(async (apiQuestion) => {
+        return prisma.question.create({
+            data: {
+                title: apiQuestion.title,
+                theme: {
+                    connect: {
+                        id: Number(categoryId)
+                    }
+                },
+                quizz: {
+                    connect: {
+                        id: quizz.id
+                    }
+                },
+                multiple: apiQuestion.multiple,
+                answers: {
+                    createMany: {
+                        data: apiQuestion.answers.map((answer: Answer) => {
+                            return {
+                                title: answer.title,
+                                isCorrect: answer.isCorrect
+                            }
+                        })
+                    }
+                }
+            }
+        })
+    }))
+
+    return prisma.quizz.findUnique({
+        where: {id: quizz.id}, include: {
+            questions: {
+                include: {
+                    answers: {
+                        select: {
+                            id: true,
+                            title: true
+                        }
+                    }
+                }
+            }
+        }
+    }) as unknown as Quizz;
 }
 
 async function getQuestionsForCategory(id: number): Promise<Question[]> {
