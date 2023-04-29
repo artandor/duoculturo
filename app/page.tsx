@@ -1,18 +1,25 @@
-import React, {Suspense} from 'react'
+import React from 'react'
 import ThemeList from "@/components/components/ThemeList";
-import Spinner from "@/components/components/Spinner";
+import {redirect} from "next/navigation";
+import {getServerSession} from "next-auth/next";
+import {authOptions} from "@/components/app/api/auth/[...nextauth]/route";
 
 type Props = {}
 
-function page({}: Props) {
+
+async function page({}: Props) {
+    const session = await getServerSession(authOptions)
+
+    if (!session || !session.user) {
+        redirect('/auth/login')
+    }
 
     return (
         <main className="container mx-auto my-3 text-center">
-            <h1 className="text-3xl">Choisis un thème !</h1>
-            <Suspense fallback={<Spinner/>}>
-                {/* @ts-expect-error Async Server Component */}
-                <ThemeList/>
-            </Suspense>
+            <p className="text-3xl">Bienvenue {session.user.name} {"<" + session.user.email + ">"} !</p>
+            <h1 className="text-2xl mt-3">Choisis un thème</h1>
+            {/* @ts-expect-error Async Server Component */}
+            <ThemeList/>
         </main>
     )
 }

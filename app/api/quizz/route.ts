@@ -1,8 +1,8 @@
-import {prisma} from "@/components/app/utils/database";
+import {prisma} from "@/components/lib/database";
 import {NextResponse} from "next/server";
 // @ts-ignore
 import decode from "decode-html";
-import {ENTRYPOINT} from "@/components/app/utils/tools";
+import {ENTRYPOINT} from "@/components/lib/tools";
 
 
 export async function GET(request: Request) {

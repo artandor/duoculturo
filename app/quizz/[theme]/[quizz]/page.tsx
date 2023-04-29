@@ -1,6 +1,6 @@
 import QuizzComponent from '@/components/components/QuizzComponent';
 import React from 'react'
-import {prisma} from "@/components/app/utils/database";
+import {prisma} from "@/components/lib/database";
 
 type Props = {
     params: {

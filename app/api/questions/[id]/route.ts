@@ -1,5 +1,5 @@
 import {NextResponse} from "next/server";
-import {prisma} from "@/components/app/utils/database";
+import {prisma} from "@/components/lib/database";
 
 
 export async function POST(request: Request, {params}: { params: { id: number } }) {

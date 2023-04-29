@@ -1,7 +1,7 @@
 import React from "react";
 import {Theme} from "@prisma/client";
-import {slugify} from "@/components/app/utils/tools";
-import {prisma} from "@/components/app/utils/database";
+import {slugify} from "@/components/lib/tools";
+import {prisma} from "@/components/lib/database";
 // @ts-ignore
 import decode from "decode-html";
 import ThemeCard from "@/components/components/ThemeCard";

@@ -92,9 +92,17 @@ CREATE TABLE ` Theme `
 (
     255
 ) NOT NULL,
+    ` slug ` VARCHAR
+(
+    191
+) NOT NULL,
     UNIQUE INDEX ` Theme_name_key `
 (
     `name`
+),
+    UNIQUE INDEX ` Theme_slug_key `
+(
+    `slug`
 ),
     PRIMARY KEY
 (
