@@ -20,7 +20,7 @@ export default function ThemeCard({theme}: Props) {
             <CardFooter divider className="py-3 text-center bg-purple text-white rounded-b-xl">
                 <Link href={`/quizz/`} onClick={async (event) => {
                     event.preventDefault();
-                    const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_PATH}/api/quizz?slug=${theme.slug}`);
+                    const response = await fetch(`${window.location.href}/api/quizz?slug=${theme.slug}`);
                     router.push(await response.json())
                 }
                 }>Start quizz</Link>
