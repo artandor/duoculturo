@@ -1,28 +1,19 @@
-import QuizzComponent from '@/components/components/QuizzComponent';
-import React from 'react'
+import {prisma} from "@/components/app/utils/database";
+import {NextResponse} from "next/server";
 // @ts-ignore
-import decode from "decode-html"
-import {prisma} from "@/components/app/database";
+import decode from "decode-html";
 
-type Props = {
-    params: {
-        category: number
-    }
+
+export async function GET(request: Request) {
+    const {searchParams} = new URL(request.url);
+
+    console.log(searchParams.get("slug"))
+    const quizzId = await generateQuizzForTheme(searchParams.get("slug") ?? "", 2)
+    return NextResponse.json(new URL(`${process.env.NEXT_PUBLIC_API_BASE_PATH}/quizz/${searchParams.get("slug")}/${quizzId}`))
 }
 
-async function page({params}: Props) {
-    const quizz: Quizz = await getQuizzForCategory(params.category);
-
-
-    return (
-        <div className='container mx-64 my-16'>
-            <QuizzComponent quizz={quizz}/>
-        </div>
-    )
-}
-
-async function getQuizzForCategory(categoryId: number): Promise<Quizz> {
-    let apiQuestions: Question[] = await getQuestionsForCategory(categoryId);
+async function generateQuizzForTheme(themeSlug: string, questionAmount = 7): Promise<number> {
+    let apiQuestions: Question[] = await getQuestionsForCategory(themeSlug, questionAmount);
 
     const quizz = await prisma.quizz.create({
         data: {}
@@ -34,7 +25,7 @@ async function getQuizzForCategory(categoryId: number): Promise<Quizz> {
                 title: apiQuestion.title,
                 theme: {
                     connect: {
-                        id: Number(categoryId)
+                        slug: themeSlug
                     }
                 },
                 quizz: {
@@ -57,25 +48,12 @@ async function getQuizzForCategory(categoryId: number): Promise<Quizz> {
         })
     }))
 
-    return prisma.quizz.findUnique({
-        where: {id: quizz.id}, include: {
-            questions: {
-                include: {
-                    answers: {
-                        select: {
-                            id: true,
-                            title: true
-                        },
-                        orderBy: {title: "asc"}
-                    }
-                }
-            }
-        }
-    }) as unknown as Quizz;
+    return quizz.id;
 }
 
-async function getQuestionsForCategory(id: number): Promise<Question[]> {
-    const response = await fetch(`https://opentdb.com/api.php?amount=7&category=${id}`, {next: {revalidate: 30}})
+async function getQuestionsForCategory(themeSlug: string, questionAmount: number): Promise<Question[]> {
+    const theme = await prisma.theme.findUnique({where: {slug: themeSlug}})
+    const response = await fetch(`https://opentdb.com/api.php?amount=${questionAmount}&category=${theme?.id}`, {next: {revalidate: 30}})
     const json = await response.json()
     return json['results'].map((rawResult: any, index: number) => normalizeQuestion(rawResult, index))
 }
@@ -90,5 +68,3 @@ function normalizeQuestion(question: any, key: number): Question {
         multiple: question["type"] === "multiple"
     }
 }
-
-export default page;

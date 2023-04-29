@@ -1,8 +1,8 @@
 "use client";
 import React, {useState} from 'react'
-import QuestionForm from './QuestionForm';
-import {Progress} from './override/material';
-import QuizzResult from './QuizzResult';
+import QuizzResult from "@/components/components/QuizzResult";
+import {Progress} from "@/components/components/override/material";
+import QuestionForm from "@/components/components/QuestionForm";
 
 type Props = {
     quizz: Quizz
@@ -24,7 +24,6 @@ export default function QuizzComponent({quizz}: Props) {
                                   increaseScore={() => setQuizzScore(quizzScore + 1)}/>
                 </div>
                 : <QuizzResult score={quizzScore} questionAmount={quizz.questions.length}/>}
-
         </div>
     )
 }

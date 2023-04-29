@@ -32,6 +32,7 @@ model Theme {
   id        Int        @id @default(autoincrement())
   name      String     @unique @db.VarChar(255)
   questions Question[]
+  slug      String     @unique
 }
 
 model Quizz {

@@ -1,5 +1,5 @@
 import {NextResponse} from "next/server";
-import {prisma} from "@/components/app/database";
+import {prisma} from "@/components/app/utils/database";
 
 
 export async function POST(request: Request, {params}: { params: { id: number } }) {
@@ -7,7 +7,7 @@ export async function POST(request: Request, {params}: { params: { id: number } 
 
     const answers: { id: number }[] = await prisma.answer.findMany({
         select: {id: true},
-        where: {questionId: Number(questionId), isCorrect: true},
+        where: {questionId: Number(questionId), isCorrect: true}
     })
     const res = await request.json();
 
