@@ -9,7 +9,7 @@ export async function GET(request: Request) {
 
     console.log(searchParams.get("slug"))
     const quizzId = await generateQuizzForTheme(searchParams.get("slug") ?? "", 2)
-    return NextResponse.json(new URL(`${process.env.VERCEL_URL ? process.env.VERCEL_URL : process.env.NEXT_PUBLIC_API_BASE_PATH}/quizz/${searchParams.get("slug")}/${quizzId}`))
+    return NextResponse.json(new URL(`${process.env.VERCEL_URL ? "https://" + process.env.VERCEL_URL : process.env.NEXT_PUBLIC_API_BASE_PATH}/quizz/${searchParams.get("slug")}/${quizzId}`))
 }
 
 async function generateQuizzForTheme(themeSlug: string, questionAmount = 7): Promise<number> {
