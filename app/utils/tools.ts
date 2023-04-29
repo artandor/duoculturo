@@ -6,3 +6,6 @@ export function slugify(str: string): string {
         .replace(/[\s_-]+/g, '-')
         .replace(/^-+|-+$/g, '');
 }
+
+export const ENTRYPOINT: string = process.env.VERCEL_ENV && process.env.VERCEL_ENV === "production" ? "https://duoculturo.vercel.app"
+    : process.env.VERCEL_URL ? "https://" + process.env.VERCEL_URL : 'http://localhost:3000'
