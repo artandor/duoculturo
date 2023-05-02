@@ -1,9 +1,11 @@
 "use client";
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import AnswerComponent from './AnswerComponent'
 import {SubmitHandler, useForm} from "react-hook-form";
 import {Button} from './override/material';
 import {QuizzUser} from "@prisma/client";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faArrowRight} from "@fortawesome/free-solid-svg-icons/faArrowRight";
 
 type Props = {
     question: Question;
@@ -18,6 +20,12 @@ type IFormInput = {
 
 function QuestionForm({question, triggerNextQuestion, quizzUser}: Props) {
     const {register, setValue, handleSubmit, formState: {errors}, reset} = useForm<IFormInput>();
+    const [showErrors, setShowErrors] = useState(false)
+
+
+    useEffect(() => {
+        setShowErrors(false)
+    }, [question])
 
     const onSubmit: SubmitHandler<IFormInput> = (data => {
         fetch(`${window.location.origin}/api/questions/${question.id}`, {
@@ -30,8 +38,9 @@ function QuestionForm({question, triggerNextQuestion, quizzUser}: Props) {
             })
         }).then(async (response: Response) => {
             if (response.status === 200) {
-                reset()
-                triggerNextQuestion && triggerNextQuestion()
+                // reset()
+                // triggerNextQuestion && triggerNextQuestion()
+                setShowErrors(true)
             }
         })
 
@@ -39,11 +48,21 @@ function QuestionForm({question, triggerNextQuestion, quizzUser}: Props) {
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <h1>{question.title}</h1>
-            {question.answers.map((answer: Answer) => {
-                return <AnswerComponent key={answer.id} answer={answer} question={question} register={register}/>
+            {question.answers.map((answer: any) => {
+                return <AnswerComponent key={answer.id} answer={answer} question={question} register={register}
+                                        showErrors={showErrors}/>
             })}
 
-            <Button variant="outlined" type='submit' fullWidth>Submit</Button>
+            {
+                !showErrors ?
+                    <Button variant="outlined" type='submit' fullWidth>Submit</Button>
+                    :
+                    <Button variant="filled" type='button' onClick={() => {
+                        triggerNextQuestion && triggerNextQuestion();
+                    }} fullWidth>
+                        Next Question{" "}<FontAwesomeIcon icon={faArrowRight}/>
+                    </Button>
+            }
 
         </form>
     )

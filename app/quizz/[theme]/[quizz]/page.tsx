@@ -92,7 +92,9 @@ async function getQuizzById(id: number) {
                     answers: {
                         select: {
                             id: true,
-                            title: true
+                            title: true,
+                            isCorrect: true,
+                            additionnalInfos: true
                         },
                         orderBy: {title: "asc"}
                     }

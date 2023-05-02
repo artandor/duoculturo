@@ -13,8 +13,6 @@ export async function POST(request: Request, {params}: { params: { id: number } 
     })
     const res = await request.json();
 
-    console.log(Number(JSON.stringify(res.selectedAnswers) === JSON.stringify(answers)))
-
     await prisma.quizzUser.update({
         where: {
             userId_quizzId: {

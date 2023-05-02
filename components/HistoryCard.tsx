@@ -21,14 +21,18 @@ export default function HistoryCard({activity}: Props) {
             </CardBody>
             <CardFooter className="pt-3">
                 {
-                    activity.QuizzUser.score >= activity.questions.length || !activity.QuizzUser.score &&
+                    !isQuizzFinished(activity) &&
                     <Link href={`/quizz/${activity.questions[0]?.theme.slug}/${activity.id}`}>
                         <Button size="lg" fullWidth={true}>
-                            Play this quizz again
+                            Continue this quizz
                         </Button>
                     </Link>
                 }
             </CardFooter>
         </Card>
     );
+}
+
+function isQuizzFinished(quizz: any): boolean {
+    return quizz.QuizzUser[0].lastEndedQuestion && quizz.questions.at(-1).id === quizz.QuizzUser[0].lastEndedQuestion
 }

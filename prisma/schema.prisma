@@ -10,12 +10,13 @@ generator client {
 }
 
 model Answer {
-  id         Int       @id @default(autoincrement())
-  createdAt  DateTime  @default(now())
-  title      String    @db.VarChar(255)
-  isCorrect  Boolean   @default(false)
-  question   Question? @relation(fields: [questionId], references: [id])
-  questionId Int?
+  id               Int       @id @default(autoincrement())
+  createdAt        DateTime  @default(now())
+  title            String    @db.VarChar(255)
+  isCorrect        Boolean   @default(false)
+  additionnalInfos String?   @db.LongText
+  question         Question? @relation(fields: [questionId], references: [id])
+  questionId       Int?
 }
 
 model Question {
