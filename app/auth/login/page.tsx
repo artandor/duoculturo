@@ -16,12 +16,12 @@ export default async function page() {
     providers = providers ?? []
 
     return (
-        <>
+        <div className="mx-auto h-screen grid content-center">
             {Object.values(providers).map((provider: ClientSafeProvider) => (
-                <div key={provider.name}>
+                <div key={provider.name} className="text-center mb-2">
                     <AuthProviderButton provider={provider}/>
                 </div>
             ))}
-        </>
+        </div>
     )
 }

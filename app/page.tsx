@@ -1,8 +1,11 @@
-import React from 'react'
+import React, {Suspense} from 'react'
 import ThemeList from "@/components/components/ThemeList";
 import {redirect} from "next/navigation";
 import {getServerSession} from "next-auth/next";
 import {authOptions} from "@/components/app/api/auth/[...nextauth]/route";
+import {ActivityList} from "@/components/components/ActivityList";
+import {Typography} from "@/components/components/override/material";
+import Spinner from "@/components/components/Spinner";
 
 type Props = {}
 
@@ -16,10 +19,19 @@ async function page({}: Props) {
 
     return (
         <main className="container mx-auto my-3 text-center">
-            <p className="text-3xl">Bienvenue {session.user.name} {"<" + session.user.email + ">"} !</p>
-            <h1 className="text-2xl mt-3">Choisis un thème</h1>
-            {/* @ts-expect-error Async Server Component */}
-            <ThemeList/>
+            <div className="grid grid-cols-12">
+                <div className="md:col-start-1 md:col-end-10 col-start-1 col-end-8">
+                    {/* @ts-expect-error Async Server Component */}
+                    <ThemeList/>
+                </div>
+                <div className="md:col-start-10 md:col-end-13 col-start-8 col-end-13 ms-3">
+                    <Typography variant="h3">Latest activities</Typography>
+                    <Suspense fallback={<Spinner/>}>
+                        {/* @ts-expect-error Async Server Component */}
+                        <ActivityList/>
+                    </Suspense>
+                </div>
+            </div>
         </main>
     )
 }

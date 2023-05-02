@@ -3,7 +3,7 @@ import {Button} from "@/components/components/override/material";
 import {ClientSafeProvider, signIn} from "next-auth/react";
 
 interface Props {
-    provider: ClientSafeProvider
+    provider: ClientSafeProvider,
 }
 
 export default function AuthProviderButton({provider}: Props) {

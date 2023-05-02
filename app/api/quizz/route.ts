@@ -9,10 +9,18 @@ export async function GET(request: Request) {
     const {searchParams} = new URL(request.url);
 
     const quizzId = await generateQuizzForTheme(searchParams.get("slug") ?? "", 7)
+
+    if (!quizzId) {
+        return new NextResponse('', {
+            status: 401,
+            statusText: "Unauthorized."
+        })
+    }
+
     return NextResponse.json(new URL(`${ENTRYPOINT}/quizz/${searchParams.get("slug")}/${quizzId}`))
 }
 
-async function generateQuizzForTheme(themeSlug: string, questionAmount = 7): Promise<number> {
+async function generateQuizzForTheme(themeSlug: string, questionAmount = 7): Promise<number | null> {
     let apiQuestions: Question[] = await getQuestionsForCategory(themeSlug, questionAmount);
 
     const quizz = await prisma.quizz.create({

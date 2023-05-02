@@ -13,6 +13,15 @@ export const authOptions: NextAuthOptions = {
                 verifyRequest: '/auth/verify-request', // (used for check email message)
                 newUser: '/auth/new-user' // New users will be directed here on first sign in (leave the property out if not of interest)*/
     },
+    callbacks: {
+        async session({session, token, user}) {
+            if (session.user) {
+                // @ts-ignore
+                session.user.id = user.id
+            }
+            return session
+        }
+    },
     providers: [
         process.env.VERCEL_ENV === "preview"
             ? CredentialsProvider({
@@ -23,7 +32,7 @@ export const authOptions: NextAuthOptions = {
                         type: "text",
                         placeholder: "jsmith",
                     },
-                    password: { label: "Password", type: "password" },
+                    password: {label: "Password", type: "password"},
                 },
                 async authorize(): Promise<any> {
                     return {
@@ -36,9 +45,9 @@ export const authOptions: NextAuthOptions = {
             })
             :
             GoogleProvider({
-            clientId: process.env.GOOGLE_CLIENT_ID ?? '',
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? ''
-        })
+                clientId: process.env.GOOGLE_CLIENT_ID ?? '',
+                clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? ''
+            })
     ]
 }
 

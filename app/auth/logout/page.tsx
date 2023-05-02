@@ -1,7 +1,12 @@
 "use client";
+import {signOut} from "next-auth/react";
+import {useRouter} from "next/navigation";
 
-export default async function page() {
-    // await signOut({callbackUrl: '/auth/login'})
 
-    return <></>
+export default function Page() {
+    const router = useRouter()
+    signOut({redirect: false, callbackUrl: ""})
+        .then(() => router.push(`/auth/login`))
+
+    return <p>Redirecting ...</p>
 }

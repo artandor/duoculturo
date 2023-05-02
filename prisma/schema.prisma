@@ -37,8 +37,22 @@ model Theme {
 }
 
 model Quizz {
-  id        Int        @id @default(autoincrement())
+  id        Int         @id @default(autoincrement())
   questions Question[]
+  QuizzUser QuizzUser[]
+}
+
+model QuizzUser {
+  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  quizz             Quizz     @relation(fields: [quizzId], references: [id], onDelete: Cascade)
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime?
+  score             Int       @default(-1)
+  lastEndedQuestion Int?
+  userId            String
+  quizzId           Int
+
+  @@id([userId, quizzId])
 }
 
 model Account {
@@ -69,13 +83,14 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String      @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String?     @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
+  QuizzUser     QuizzUser[]
 }
 
 model VerificationToken {

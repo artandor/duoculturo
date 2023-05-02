@@ -4,6 +4,8 @@ import {Inter} from 'next/font/google'
 import {config} from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
 import {Analytics} from "@vercel/analytics/react";
+import DefaultNavbar from "@/components/components/Navbar";
+import {getCurrentUser} from "@/components/lib/session";
 
 
 config.autoAddCss = false
@@ -15,15 +17,20 @@ export const metadata = {
     description: 'Un site incroyable pour améliorer ta culture générale !',
 }
 
-export default function RootLayout({
-                                       children,
-                                   }: {
+export default async function RootLayout({
+                                             children,
+                                         }: {
     children: React.ReactNode
 }) {
+    const user = await getCurrentUser()
+
     return (
         <html lang="en">
         <body className={inter.className}>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+            <DefaultNavbar user={user}/>
+            {children}
+        </ThemeProvider>
         <Analytics/>
         </body>
         </html>

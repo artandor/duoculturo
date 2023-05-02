@@ -3,11 +3,12 @@ import React from 'react'
 import AnswerComponent from './AnswerComponent'
 import {SubmitHandler, useForm} from "react-hook-form";
 import {Button} from './override/material';
+import {QuizzUser} from "@prisma/client";
 
 type Props = {
     question: Question;
+    quizzUser: QuizzUser,
     triggerNextQuestion?: Function;
-    increaseScore?: Function;
 }
 
 type IFormInput = {
@@ -15,7 +16,7 @@ type IFormInput = {
 };
 
 
-function QuestionForm({question, triggerNextQuestion, increaseScore}: Props) {
+function QuestionForm({question, triggerNextQuestion, quizzUser}: Props) {
     const {register, setValue, handleSubmit, formState: {errors}, reset} = useForm<IFormInput>();
 
     const onSubmit: SubmitHandler<IFormInput> = (data => {
@@ -24,14 +25,11 @@ function QuestionForm({question, triggerNextQuestion, increaseScore}: Props) {
             'body': JSON.stringify({
                 "selectedAnswers": typeof data.answer === "string" ? [{id: Number(data.answer)}] : data.answer.map((answer) => {
                     return {id: Number(answer)}
-                })
+                }),
+                "quizzId": quizzUser.quizzId,
             })
         }).then(async (response: Response) => {
             if (response.status === 200) {
-                const json = await response.json()
-                if (json.result) {
-                    increaseScore && increaseScore()
-                }
                 reset()
                 triggerNextQuestion && triggerNextQuestion()
             }

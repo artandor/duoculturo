@@ -13,7 +13,7 @@ export default function ThemeCard({theme}: Props) {
     return (
         <Card key={theme.id} className="bg-light">
             <CardBody className="text-center">
-                <Typography variant="h5" className="mb-2">
+                <Typography variant="h5" className="mb-2 whitespace-nowrap text-ellipsis overflow-hidden">
                     {theme.name}
                 </Typography>
             </CardBody>

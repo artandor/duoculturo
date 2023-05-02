@@ -10,7 +10,7 @@ export default async function ThemeList() {
     const themes: Theme[] = await getData();
 
     return (
-        <div className='grid grid-cols-1 md:grid-cols-2 gap-3 mx-auto my-3'>
+        <div className='grid grid-cols-1 md:grid-cols-3 gap-3 mx-auto my-3'>
             {themes.map(theme => {
                 return <ThemeCard key={theme.id} theme={theme}/>;
             })}
