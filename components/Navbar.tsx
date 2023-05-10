@@ -24,6 +24,7 @@ import {faClockRotateLeft, faLinesLeaning} from '@fortawesome/free-solid-svg-ico
 import React, {useState} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import Link from "next/link";
+import {faQuestion} from "@fortawesome/free-solid-svg-icons/faQuestion";
 
 
 // profile menu component
@@ -208,6 +209,11 @@ const navListItems = [
         label: "History",
         icon: <FontAwesomeIcon icon={faClockRotateLeft}/>,
         route: "/profile/history",
+    },
+    {
+        label: "Questions",
+        icon: <FontAwesomeIcon icon={faQuestion}/>,
+        route: "/admin/questions",
     },
 ];
 
